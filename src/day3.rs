@@ -31,15 +31,21 @@ fn remove_disabled_instructions(input: &str) -> String {
     result
 }
 
-#[aoc(day3, part1)]
-pub fn part1(input: &str) -> i32 {
-    let multiply_instructions: Vec<String> = extract_mul_expressions(input.to_string());
+fn get_total_product(multiply_instructions: Vec<String>) -> i32 {
     let mut total_product: i32 = 0;
     multiply_instructions.into_iter().for_each(|x: String| {
         let args: Vec<i32> = x.split(",").map(|x| x.parse::<i32>().unwrap()).collect();
         let product: i32 = args.iter().product();
         total_product += product;
     });
+
+    total_product
+}
+
+#[aoc(day3, part1)]
+pub fn part1(input: &str) -> i32 {
+    let multiply_instructions: Vec<String> = extract_mul_expressions(input.to_string());
+    let total_product: i32 = get_total_product(multiply_instructions);
 
     return total_product;
 }
@@ -48,12 +54,7 @@ pub fn part1(input: &str) -> i32 {
 pub fn part2(input: &str) -> i32 {
     let stripped_instructions: String = remove_disabled_instructions(input);
     let multiply_instructions: Vec<String> = extract_mul_expressions(stripped_instructions);
-    let mut total_product: i32 = 0;
-    multiply_instructions.into_iter().for_each(|x: String| {
-        let args: Vec<i32> = x.split(",").map(|x| x.parse::<i32>().unwrap()).collect();
-        let product: i32 = args.iter().product();
-        total_product += product;
-    });
+    let total_product: i32 = get_total_product(multiply_instructions);
 
     return total_product;
 }
